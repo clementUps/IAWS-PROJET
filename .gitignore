@@ -1,0 +1,4 @@
+*.class
+*.impl
+.idea
+target/
