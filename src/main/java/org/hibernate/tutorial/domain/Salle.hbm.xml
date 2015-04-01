@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping package="org.hibernate.tutorial.domain">
+
+    <class name="univ.ups.iaws.Beans.Salle" table="SALLE">
+        <id name="id" column="ID_SALLE">
+            <generator class="native"/>
+        </id>
+        <property name="ville" type="string" column="VILLE"/>
+        <property name="nbSalle" type="integer" column="NB_SALLES"/>
+    </class>
+
+</hibernate-mapping>

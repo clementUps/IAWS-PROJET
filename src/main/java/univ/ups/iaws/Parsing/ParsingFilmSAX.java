@@ -1,4 +1,4 @@
-package univ.ups.iaws.projet;
+package univ.ups.iaws.Parsing;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.URL;
