@@ -1,5 +1,5 @@
 # IAWS-PROJET
 
-BEDIGUIAN Maxime
-BLED Lucas
-CARRETIER Clément
+BEDIGUIAN Maxime (Neykhot)
+BLED Lucas (bzzd31)
+CARRETIER Clément (ClementUPS)
