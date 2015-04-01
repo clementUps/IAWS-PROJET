@@ -4,7 +4,16 @@ package univ.ups.iaws.Beans;
  * Created by 20901927 on 25/03/2015.
  */
 public class Film {
-    private String id;
+    private int id;
+    private String imdbId;
+    private String titre;
+    private int annee;
+
+    public Film (String titre, int annee, String imdbId) {
+        this.titre = titre;
+        this.annee = annee;
+        this.imdbId = imdbId;
+    }
 
     public String getTitre() {
         return titre;
@@ -14,11 +23,19 @@ public class Film {
         this.titre = titre;
     }
 
-    public String getId() {
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -29,17 +46,4 @@ public class Film {
     public void setAnnee(int annee) {
         this.annee = annee;
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    private String titre;
-    private int annee;
-    private String type;
-
 }
