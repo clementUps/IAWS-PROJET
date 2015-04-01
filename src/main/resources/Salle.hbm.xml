@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 
-<hibernate-mapping package="org.hibernate.tutorial.domain">
+<hibernate-mapping>
 
     <class name="univ.ups.iaws.Beans.Salle" table="SALLE">
         <id name="id" column="ID_SALLE">

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+
+    <class name="univ.ups.iaws.Beans.FilmSalle" table="FILM_SALLE">
+        <id name="id" column="ID">
+            <generator class="native"/>
+        </id>
+        <property name="idFilm" type="integer" column="ID_FILM"/>
+        <property name="idSalle" type="integer" column="ID_SALLE"/>
+    </class>
+
+</hibernate-mapping>

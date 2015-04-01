@@ -10,6 +10,7 @@ public class HibernateUtils {
     private static SessionFactory buildSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
+
            return new Configuration().configure().buildSessionFactory(
                     new StandardServiceRegistryBuilder().build() );
         }
