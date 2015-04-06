@@ -11,7 +11,6 @@ import org.w3c.dom.Element;
 import univ.ups.iaws.Beans.Film;
 import univ.ups.iaws.services.FilmService;
 
-package univ.ups.iaws.Beans.Films;
 
 /**
  * @author franck Silvestre
