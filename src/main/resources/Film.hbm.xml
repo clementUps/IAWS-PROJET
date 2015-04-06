@@ -6,7 +6,7 @@
 
 <hibernate-mapping>
 
-    <class name="univ.ups.iaws.Beans.Film" table="FILM">
+    <class name="univ.ups.iaws.Beans.Film" table="film">
         <id name="id" column="ID_FILM">
             <generator class="native"/>
         </id>

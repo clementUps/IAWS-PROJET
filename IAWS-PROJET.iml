@@ -4,6 +4,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
+          <unit-entry name="hibernate.cfg.xml" value="e6411faf-81a7-4671-a1ab-e13e96247c55" />
           <unit-entry name="univ:ups:iaws:Hibernate:hibernate.cfg.xml" value="30dc0ea7-a361-44a8-983c-2967212950c1" />
         </datasource-map>
         <naming-strategy-map />
@@ -35,7 +36,6 @@
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.18.1-GA" level="project" />
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.jboss:jandex:1.1.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.h2database:h2:1.4.186" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.9" level="project" />
   </component>
 </module>
-

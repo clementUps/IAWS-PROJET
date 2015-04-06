@@ -23,11 +23,11 @@ public class App
         Film film = new Film();
         film.setAnnee(10);
         film.setImdbId("aze");
-        film.setTitre("titre");
+        film.setTitre("titre1");
         session.save(film);
+        session.flush();
         session.getTransaction().commit();
         session.close();
-
-
+        hibernate.shutdown();
     }
 }
