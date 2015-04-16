@@ -18,6 +18,8 @@ import univ.ups.iaws.services.FilmService;
 @Endpoint
 public class FilmsEndpoint {
     private Film films;
+    private FilmService filmService;
+
 
     private static final String NAMESPACE_URI = "http://www.omdbapi.com/?s=the+matrix&y=&plot=short&r=json";
 
