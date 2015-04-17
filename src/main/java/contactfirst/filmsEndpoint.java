@@ -1,30 +1,27 @@
 package contactfirst;
 
 
-
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
-import org.springframework.ws.server.endpoint.annotation.Namespace;
-import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
-import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import org.springframework.ws.server.endpoint.annotation.XPathParam;
+import org.springframework.ws.server.endpoint.annotation.*;
 import org.w3c.dom.Element;
 import univ.ups.iaws.Beans.Film;
 import univ.ups.iaws.services.FilmService;
+import univ.ups.iaws.services.FilmServiceImpl;
 
 
 /**
  * @author franck Silvestre
  */
 @Endpoint
-public class FilmsEndpoint {
+public class filmsEndpoint {
     private Film films;
-    private FilmService filmService;
+    private FilmServiceImpl fs;
 
 
     private static final String NAMESPACE_URI = "http://www.omdbapi.com/?s=the+matrix&y=&plot=short&r=json";
 
     
-    public FilmsEndpoint(Film films) {
+    public filmsEndpoint(Film films) {
         this.films = films;
     }
 
@@ -41,9 +38,9 @@ public class FilmsEndpoint {
         imdbID = new String(imdbID);
 
 
-        // invoque le service "releveNoteService" pour récupérer les objets recherchés
+        // invoque le service "FilmService" pour récupérer les objets recherchés
         //
-        Film evals = FilmService.findAllFilms(imdbID, titre, annee);
+        Film evals = fs.findAllFilms(imdbID,titre,annee);
 
         // Transforme en élément XML ad-hoc pour le retour
         // Ici, on prend le parti de renvoyer un fichier XML statique. Il faudrait traiter la
