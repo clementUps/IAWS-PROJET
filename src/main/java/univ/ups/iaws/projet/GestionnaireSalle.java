@@ -8,6 +8,7 @@ import univ.ups.iaws.Beans.Salle;
 import univ.ups.iaws.Hibernate.HibernateUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,15 @@ public class GestionnaireSalle {
     public Salle saveSalle(Salle newSalle){
         session.saveOrUpdate(newSalle);
         return newSalle;
+    }
+    public List<Salle> saveSalle(List<Salle> newFilm){
+        List<Salle> listeSalle = new ArrayList<Salle>();
+        Salle salleTempo;
+        for(Salle eachSalle:newFilm){
+            salleTempo = saveSalle(eachSalle);
+            listeSalle.add(salleTempo);
+        }
+        return listeSalle;
     }
 
     public void deleteSalle(Salle salle){

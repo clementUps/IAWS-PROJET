@@ -23,21 +23,26 @@ import java.util.List;
 public class GestionnaireLiaison {
     private Salle salle;
     private List<Film> filmListe = new ArrayList<Film>();
-
-    public void saveAll(Salle newSalle,List<Film> films){
-        FilmSalle filmSalle;
-        Film filmTempo;
-        Salle salleTempo;
+    private Session session;
+    public static Session createSession(){
         HibernateUtils hibernate = new HibernateUtils();
         SessionFactory sessionFactory = hibernate.getSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+        return session;
+    }
+    public GestionnaireLiaison(Session session){
+        this.session = session;
+    }
+    public void saveAll(Salle newSalle,List<Film> films){
+        FilmSalle filmSalle;
+        Film filmTempo;
+        Salle salleTempo;
         GestionnaireSalle gestSalle = new GestionnaireSalle(session);
         GestionnaireFilm gestFilm = new GestionnaireFilm(session);
         salle = gestSalle.saveSalle(newSalle);
 
         for(Film film : films){
-            System.out.println(" je passe ici");
             filmTempo = gestFilm.saveFilm(film);
             filmListe.add(filmTempo);
             filmSalle = new FilmSalle();
@@ -47,44 +52,103 @@ public class GestionnaireLiaison {
         }
         session.flush();
         session.getTransaction().commit();
-        session.close();
-        //hibernate.shutdown();
+        System.out.println("je passe la hey oui ");
     }
-
-    public List<Salle> getSallesByFilm(Film film){
-        List<Salle> listeSalle = new ArrayList<Salle>();
-        HibernateUtils hibernate = new HibernateUtils();
-        SessionFactory sessionFactory = hibernate.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
-
+    private Iterator searchFilm(Session session,Film film){
         Criteria criteria = session.createCriteria(FilmSalle.class);
         criteria.add(Restrictions.eq("idFilm",film.getId()));
         criteria.setProjection(Projections.property("idSalle"));
         List result = criteria.list();
         Iterator iter = result.iterator();
+        return iter;
+    }
+    public List<Salle> getSallesByCritere(Film film){
+        List<Salle> listeSalle = new ArrayList<Salle>();
+        Iterator iter = searchFilm(session,film);
         while (iter.hasNext()) {
             Integer id = (Integer) iter.next();
-            System.out.println("salle : " + result.get(1));
-            String queryStr = "select s from Salle s where "
-                    + "s.id =:salleFilmId";
-            Query query = session.createQuery(queryStr);
-            query.setParameter("salleFilmId", id);
-            for (Salle salle : (List<Salle>) (query.list())) {
-                listeSalle.add(salle);
-            }
+            listeSalle.addAll(createQuerySalle(id, null, null, session));
         }
-
         return listeSalle;
     }
+    public List<Salle> getSallesByCritere(int nbSalle){
+        return createQuerySalle(null,null,nbSalle,session);
+    }
+
+    public List<Salle> getSallesByCritere(String ville){
+        return createQuerySalle(null,ville,null,session);
+    }
+    public List<Salle> getSallesByCritere(int nbSalle,String ville){
+        return createQuerySalle(null,ville,nbSalle,session);
+    }
+    public List<Salle> getSallesByCritere(Film film,int nbSalle){
+        List<Salle> listeSalle = new ArrayList<Salle>();
+        Iterator iter = searchFilm(session,film);
+        while (iter.hasNext()) {
+            Integer id = (Integer) iter.next();
+            listeSalle.addAll(createQuerySalle(id, null, nbSalle, session));
+        }
+        return listeSalle;
+    }
+    public List<Salle> getSallesByCritere(Film film,String ville){
+        List<Salle> listeSalle = new ArrayList<Salle>();
+        Iterator iter = searchFilm(session,film);
+        while (iter.hasNext()) {
+            Integer id = (Integer) iter.next();
+            listeSalle.addAll(createQuerySalle(id, ville, null, session));
+        }
+        return listeSalle;
+    }
+
+    public List<Salle> getSallesByCritere(Film film,int nbSalle,String ville){
+        List<Salle> listeSalle = new ArrayList<Salle>();
+        Iterator iter = searchFilm(session,film);
+        while (iter.hasNext()) {
+            Integer id = (Integer) iter.next();
+            listeSalle.addAll(createQuerySalle(id, ville, nbSalle, session));
+        }
+        return listeSalle;
+    }
+
+    private List<Salle> createQuerySalle(Integer id,String ville,Integer nbSalle,Session session){
+        List<Salle> listeSalle = new ArrayList<Salle>();
+        String queryStr = "select s from Salle as s where ";
+        boolean isNew= true;
+        if(id != null){
+            queryStr += "s.id =:salleFilmId";
+            isNew = false;
+        }
+        if(nbSalle!= null){
+            if(!isNew){
+                queryStr += " and ";
+            }
+            queryStr += "s.nbSalle =:salleNb";
+        }
+        if(ville != null){
+            if(!isNew){
+                queryStr += " and ";
+            }
+            queryStr += "s.ville =:salleVille";
+        }
+        System.out.println("query "+queryStr);
+        Query query = session.createQuery(queryStr);
+        if(id!=null){
+            query.setParameter("salleFilmId", id);
+        }
+        if(ville!=null){
+            query.setParameter("salleVille", ville);
+        }
+        if(nbSalle != null){
+            query.setParameter("salleNb", nbSalle);
+        }
+        for (Salle salle : (List<Salle>) (query.list())) {
+            listeSalle.add(salle);
+        }
+        return listeSalle;
+    }
+
     public List<Film> getFilmsBySalle(Salle salle){
         List<Film> listeFilm = new ArrayList<Film>();
-        HibernateUtils hibernate = new HibernateUtils();
-        SessionFactory sessionFactory = hibernate.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
 
         Criteria criteria = session.createCriteria(FilmSalle.class);
         criteria.add(Restrictions.eq("idSalle", salle.getId()));
@@ -107,10 +171,6 @@ public class GestionnaireLiaison {
     }
 
     public void deleteElement(Salle salle,Film film){
-        HibernateUtils hibernate = new HibernateUtils();
-        SessionFactory sessionFactory = hibernate.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
         GestionnaireSalle gestSalle = new GestionnaireSalle(session);
         GestionnaireFilm gestFilm = new GestionnaireFilm(session);
         List<FilmSalle> filmsalle = (List<FilmSalle>) session.createCriteria(FilmSalle.class)
@@ -126,7 +186,6 @@ public class GestionnaireLiaison {
         gestFilm.deleteFilm(film);
         gestSalle.deleteSalle(salle);
         session.getTransaction().commit();
-        session.close();
     }
 
 }

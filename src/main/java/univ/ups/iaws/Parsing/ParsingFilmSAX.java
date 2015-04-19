@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,19 +17,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import univ.ups.iaws.Beans.Film;
+import univ.ups.iaws.Beans.Salle;
+import univ.ups.iaws.projet.GestionnaireFilm;
+import univ.ups.iaws.projet.GestionnaireLiaison;
 
 public class ParsingFilmSAX extends DefaultHandler {
 
     static ArrayList<Film> listeFilm = new ArrayList<Film>();
 
-
-    public void startDocument() {
-        System.out.println("*** START DOCUMENT");
+    public List<Film> getListeFilm(){
+        return listeFilm;
     }
+    public void startDocument() { }
 
-    public void endDocument() {
-        System.out.println("*** END DOCUMENT");
-    }
+    public void endDocument() { }
 
     public void startElement(String uri, String localName, String qName,
                              Attributes attributes) throws SAXException {
@@ -38,11 +40,9 @@ public class ParsingFilmSAX extends DefaultHandler {
         String imdbId = null;
         for (int i = 0; i < attNb; i++) {
             if (attributes.getQName(i).toLowerCase().equals("title")) {
-                System.out.println("attribut kjbc titre "+attributes.getValue(i));
                 nom = attributes.getValue(i);
             }
             if (attributes.getQName(i).toLowerCase().equals("year")) {
-                System.out.println("attribut kjbc year "+attributes.getValue(i));
                 try {
                     annee = Integer.parseInt(attributes.getValue(i));
                 }catch(NumberFormatException e) {
@@ -54,22 +54,17 @@ public class ParsingFilmSAX extends DefaultHandler {
                 }
             }
             if (attributes.getQName(i).toLowerCase().equals("imdbid")) {
-                System.out.println("attribut imdb "+attributes.getValue(i));
                 imdbId = attributes.getValue(i);
             }
             // je vérifie si c'est un film, dans ce cas je rajoute dans la liste
             if (attributes.getQName(i).toLowerCase().equals("type")) {
-                System.out.println("attribut kjbc type "+attributes.getValue(i));
                 if (attributes.getValue(i).equals("movie")) {
-                    System.out.println("attribut kjbc movie "+attributes.getValue(i));
                     Film monFilm = new Film(nom, annee, imdbId);
                     if (!exists(monFilm)) { //il n'existe pas dans ma liste donc je l'ajoute
                         listeFilm.add(monFilm);
                     }
                 }
             }
-            System.out.print(attributes.getQName(i) + "_" + i + "_("
-                    + attributes.getValue(i) + ") + ");
         }
     }
 
@@ -95,7 +90,6 @@ public class ParsingFilmSAX extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName)
             throws SAXException {
-        System.out.println(""); // juste pour passer à la ligne
     }
 
     public void characters(char[] ch, int start, int length)
@@ -103,23 +97,4 @@ public class ParsingFilmSAX extends DefaultHandler {
         System.out.print("text(" + String.copyValueOf(ch, start, length) + ")");
     }
 
-    /**
-     * @param args
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @throws IOException
-     */
-    public static void main(String[] args) throws ParserConfigurationException,
-            SAXException, IOException {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        SAXParser saxParser = spf.newSAXParser();
-        ClientFilm c = new ClientFilm();
-        InputStream in = c.getEvals("The Matrix", "",false);
-        saxParser.parse(new DataInputStream(in), new ParsingFilmSAX());
-        afficherListeFilm();
-        in = c.getEvals("matrix", "",true);
-        saxParser.parse(new DataInputStream(in), new ParsingFilmSAX());
-        afficherListeFilm();
-        in.close();
-    }
 }

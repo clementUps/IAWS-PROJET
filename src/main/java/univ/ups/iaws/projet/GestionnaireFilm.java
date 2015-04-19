@@ -8,6 +8,7 @@ import univ.ups.iaws.Beans.Salle;
 import univ.ups.iaws.Hibernate.HibernateUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,17 @@ public class GestionnaireFilm {
         session.saveOrUpdate(newFilm);
         return newFilm;
     }
+
+    public List<Film> saveFilm(List<Film> newFilm){
+        List<Film> listeFilm = new ArrayList<Film>();
+        Film filmTempo;
+        for(Film film:newFilm){
+            filmTempo = saveFilm(film);
+            listeFilm.add(filmTempo);
+        }
+        return listeFilm;
+    }
+
 
     public void deleteFilm(Film film){
         session.delete(film);

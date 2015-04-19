@@ -1,7 +1,10 @@
 package univ.ups.iaws.Hibernate;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+
+import javax.imageio.spi.ServiceRegistry;
 
 public class HibernateUtils {
 
@@ -10,8 +13,11 @@ public class HibernateUtils {
     private static SessionFactory buildSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-           return new Configuration().configure().buildSessionFactory(
-                    new StandardServiceRegistryBuilder().build() );
+            Configuration conf = new Configuration().configure("hibernate.cfg.xml");
+            StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                    .applySettings(conf.getProperties()).build();
+            SessionFactory sessionFactory = conf.buildSessionFactory(serviceRegistry);
+           return sessionFactory;
         }
         catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed

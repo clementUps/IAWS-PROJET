@@ -33,14 +33,6 @@ public class Film {
         this.titre = titre;
     }
 
-    public int getId() {
-    public String getImdbId() {
-        return imdbId;
-    }
-
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
-    }
 
     public int getId() {
         return id;
