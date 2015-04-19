@@ -1,12 +1,14 @@
-package contactfirst;
+package RestFull;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.InputStream;
 
 
@@ -27,23 +29,12 @@ public class ClientFilm {
         final WebTarget wt = c.target(build);
         try {
         	System.out.println(wt.getUri());
-            Response response = wt.request(MediaType.APPLICATION_XML).get();
+            Response response = wt.request(MediaType.TEXT_XML).get();
             InputStream in = response.readEntity(InputStream.class);
-            System.out.println("string response: " + response.readEntity(String.class));
             return in;
         } catch(Exception e){
             e.printStackTrace();
         }
         return null;
-    }
-    
-    public static void main( String[] args ){
-        ClientFilm c = new ClientFilm();
-        try {
-            (c.getEvals("matrix", "",true)).close();
-            (c.getEvals("matrix", "",false)).close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

@@ -1,13 +1,17 @@
 package univ.ups.iaws.Parsing;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import RestFull.ClientFilm;
+import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -33,18 +37,31 @@ public class ParsingFilmSAX extends DefaultHandler {
         int annee = 0;
         String imdbId = null;
         for (int i = 0; i < attNb; i++) {
-            if(attributes.getQName(i).equals("Title")) {
+            if (attributes.getQName(i).toLowerCase().equals("title")) {
+                System.out.println("attribut kjbc titre "+attributes.getValue(i));
                 nom = attributes.getValue(i);
             }
-            if(attributes.getQName(i).equals("Year")) {
-                annee = Integer.parseInt(attributes.getValue(i));
+            if (attributes.getQName(i).toLowerCase().equals("year")) {
+                System.out.println("attribut kjbc year "+attributes.getValue(i));
+                try {
+                    annee = Integer.parseInt(attributes.getValue(i));
+                }catch(NumberFormatException e) {
+                    if(attributes.getValue(i).matches("-\\/")){
+                        annee = Integer.parseInt(attributes.getValue(i).split("-\\/")[0]);
+                    }else {
+                        annee = -1;
+                    }
+                }
             }
-            if(attributes.getQName(i).equals("imdbID")) {
+            if (attributes.getQName(i).toLowerCase().equals("imdbid")) {
+                System.out.println("attribut imdb "+attributes.getValue(i));
                 imdbId = attributes.getValue(i);
             }
             // je vérifie si c'est un film, dans ce cas je rajoute dans la liste
-            if(attributes.getQName(i).equals("Type")) {
+            if (attributes.getQName(i).toLowerCase().equals("type")) {
+                System.out.println("attribut kjbc type "+attributes.getValue(i));
                 if (attributes.getValue(i).equals("movie")) {
+                    System.out.println("attribut kjbc movie "+attributes.getValue(i));
                     Film monFilm = new Film(nom, annee, imdbId);
                     if (!exists(monFilm)) { //il n'existe pas dans ma liste donc je l'ajoute
                         listeFilm.add(monFilm);
@@ -96,8 +113,13 @@ public class ParsingFilmSAX extends DefaultHandler {
             SAXException, IOException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser saxParser = spf.newSAXParser();
-        URL refFic = new URL("http://www.omdbapi.com/?s=matrix&y=&plot=short&r=xml");
-        saxParser.parse(new DataInputStream(refFic.openStream()), new ParsingFilmSAX());
+        ClientFilm c = new ClientFilm();
+        InputStream in = c.getEvals("The Matrix", "",false);
+        saxParser.parse(new DataInputStream(in), new ParsingFilmSAX());
         afficherListeFilm();
+        in = c.getEvals("matrix", "",true);
+        saxParser.parse(new DataInputStream(in), new ParsingFilmSAX());
+        afficherListeFilm();
+        in.close();
     }
 }
