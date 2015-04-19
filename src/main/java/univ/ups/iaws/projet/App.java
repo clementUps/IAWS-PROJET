@@ -3,6 +3,7 @@ package univ.ups.iaws.projet;
 import RestFull.ClientFilm;
 import org.hibernate.Session;
 import org.xml.sax.SAXException;
+import univ.ups.iaws.Beans.Film;
 import univ.ups.iaws.Beans.Salle;
 import univ.ups.iaws.Parsing.ParsingFilmSAX;
 
@@ -35,7 +36,6 @@ public class App {
             in = c.getEvals("matrix", "", true);
             saxParser.parse(new DataInputStream(in), new ParsingFilmSAX());
             parse.afficherListeFilm();
-            gestionnaireFilm.saveFilm(parse.getListeFilm());
 
             Salle salle = new Salle();
             salle.setNbSalle(5);
@@ -43,7 +43,7 @@ public class App {
             // insertion en base de donnée d'une liste de film lié a une salle
             GestionnaireLiaison gestionnaire = new GestionnaireLiaison(session);
             gestionnaire.saveAll(salle, parse.getListeFilm());
-            System.out.println(gestionnaire.getSallesByCritere(parse.getListeFilm().get(0)).get(0).getVille());
+            System.out.println(gestionnaire.getSallesByCritere(new Film("The Matrix",1999,"tt0133093")).get(0).getVille());
             System.out.println(gestionnaire.getSallesByCritere(parse.getListeFilm().get(0),5).get(0).getVille());
             System.out.println(gestionnaire.getSallesByCritere(parse.getListeFilm().get(0),"Toulouse").get(0).getVille());
             System.out.println(gestionnaire.getSallesByCritere("Toulouse").get(0).getVille());

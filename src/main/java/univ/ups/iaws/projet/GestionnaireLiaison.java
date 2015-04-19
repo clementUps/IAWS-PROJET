@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import Exception.requete.NullRequeteException;
+import java.util.Objects;
 
 /**
  * Created by clement on 06/04/2015.
@@ -34,6 +36,7 @@ public class GestionnaireLiaison {
     public GestionnaireLiaison(Session session){
         this.session = session;
     }
+
     public void saveAll(Salle newSalle,List<Film> films){
         FilmSalle filmSalle;
         Film filmTempo;
@@ -52,9 +55,20 @@ public class GestionnaireLiaison {
         }
         session.flush();
         session.getTransaction().commit();
-        System.out.println("je passe la hey oui ");
     }
-    private Iterator searchFilm(Session session,Film film){
+    private Iterator searchFilm(Film film)throws NullRequeteException{
+        if(film.getId()== 0) {
+            try{
+                String queryStr = "select f from Film as f where f.imdbId=:filmIMdbId";
+                Query query = session.createQuery(queryStr);
+                query.setParameter("filmIMdbId", film.getImdbId());
+                Film f =  (Film)query.uniqueResult();
+                film = f;
+            }catch(Exception e){
+                e.printStackTrace();
+                throw new NullRequeteException();
+            }
+        }
         Criteria criteria = session.createCriteria(FilmSalle.class);
         criteria.add(Restrictions.eq("idFilm",film.getId()));
         criteria.setProjection(Projections.property("idSalle"));
@@ -62,9 +76,9 @@ public class GestionnaireLiaison {
         Iterator iter = result.iterator();
         return iter;
     }
-    public List<Salle> getSallesByCritere(Film film){
+    public List<Salle> getSallesByCritere(Film film)throws NullRequeteException{
         List<Salle> listeSalle = new ArrayList<Salle>();
-        Iterator iter = searchFilm(session,film);
+        Iterator iter = searchFilm(film);
         while (iter.hasNext()) {
             Integer id = (Integer) iter.next();
             listeSalle.addAll(createQuerySalle(id, null, null, session));
@@ -81,18 +95,18 @@ public class GestionnaireLiaison {
     public List<Salle> getSallesByCritere(int nbSalle,String ville){
         return createQuerySalle(null,ville,nbSalle,session);
     }
-    public List<Salle> getSallesByCritere(Film film,int nbSalle){
+    public List<Salle> getSallesByCritere(Film film,int nbSalle)throws NullRequeteException{
         List<Salle> listeSalle = new ArrayList<Salle>();
-        Iterator iter = searchFilm(session,film);
+        Iterator iter = searchFilm(film);
         while (iter.hasNext()) {
             Integer id = (Integer) iter.next();
             listeSalle.addAll(createQuerySalle(id, null, nbSalle, session));
         }
         return listeSalle;
     }
-    public List<Salle> getSallesByCritere(Film film,String ville){
+    public List<Salle> getSallesByCritere(Film film,String ville)throws NullRequeteException{
         List<Salle> listeSalle = new ArrayList<Salle>();
-        Iterator iter = searchFilm(session,film);
+        Iterator iter = searchFilm(film);
         while (iter.hasNext()) {
             Integer id = (Integer) iter.next();
             listeSalle.addAll(createQuerySalle(id, ville, null, session));
@@ -100,9 +114,9 @@ public class GestionnaireLiaison {
         return listeSalle;
     }
 
-    public List<Salle> getSallesByCritere(Film film,int nbSalle,String ville){
+    public List<Salle> getSallesByCritere(Film film,int nbSalle,String ville)throws NullRequeteException{
         List<Salle> listeSalle = new ArrayList<Salle>();
-        Iterator iter = searchFilm(session,film);
+        Iterator iter = searchFilm(film);
         while (iter.hasNext()) {
             Integer id = (Integer) iter.next();
             listeSalle.addAll(createQuerySalle(id, ville, nbSalle, session));
@@ -152,7 +166,7 @@ public class GestionnaireLiaison {
 
         Criteria criteria = session.createCriteria(FilmSalle.class);
         criteria.add(Restrictions.eq("idSalle", salle.getId()));
-        
+
         criteria.setProjection(Projections.property("idFilm"));
         List result = criteria.list();
         Iterator iter = result.iterator();
