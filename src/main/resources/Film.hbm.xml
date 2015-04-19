@@ -4,15 +4,15 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 
-<hibernate-mapping package="org.hibernate.tutorial.domain">
+<hibernate-mapping>
 
-    <class name="univ.ups.iaws.Beans.Film" table="FILM">
+    <class name="univ.ups.iaws.Beans.Film" table="film">
         <id name="id" column="ID_FILM">
             <generator class="native"/>
         </id>
+        <property name="imdbId" type="string" column="IMDB_ID"/>
         <property name="titre" type="string" column="TITRE"/>
         <property name="annee" type="integer" column="ANNEE"/>
-        <property name="type" type="integer" column="TYPE"/>
     </class>
 
 </hibernate-mapping>
