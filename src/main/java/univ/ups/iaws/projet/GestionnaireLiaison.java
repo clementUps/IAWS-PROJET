@@ -152,6 +152,7 @@ public class GestionnaireLiaison {
 
         Criteria criteria = session.createCriteria(FilmSalle.class);
         criteria.add(Restrictions.eq("idSalle", salle.getId()));
+        
         criteria.setProjection(Projections.property("idFilm"));
         List result = criteria.list();
         Iterator iter = result.iterator();
