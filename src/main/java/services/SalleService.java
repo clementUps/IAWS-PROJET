@@ -12,11 +12,9 @@ public interface SalleService {
     /**
      * Retourne le Film correspondant a un id un titre et une année.
      * @param imdbID
-     *@param titre
-     *@param annee
      * @return
      */
 
-    public List<Salle> findAllSalle(String imdbID, String titre, int annee);
+    public List<Salle> findAllSalle(String imdbID);
 }
 

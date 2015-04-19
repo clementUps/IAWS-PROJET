@@ -1,6 +1,4 @@
 <FilmRequest xmlns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://iaws/ws/contractfirst Film.xsd">
-    <title>The Matrix</title>
-    <imdbID>1</imdbID>
-    <year>1998</year>
+    <imdbID>tt0133093</imdbID>
 </FilmRequest>

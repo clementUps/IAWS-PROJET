@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class SalleServiceImpl implements SalleService{
     @Override
-    public List<Salle> findAllSalle(String imdbID, String titre, int annee) {
+    public List<Salle> findAllSalle(String imdbID) {
         Session session = GestionnaireLiaison.createSession();
         List<Salle> salle = null;
         GestionnaireLiaison gestionnaireLiaison = new GestionnaireLiaison(session);
