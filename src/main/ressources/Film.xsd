@@ -1,33 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://iaws/ws/contractfirst/exemple" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:complexType name="FilmType">
-        <xs:all>
-            <xs:element name="titre">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                     </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="annee">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="type">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:all>
-    </xs:complexType>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://iaws/ws/contractfirst" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+    <xs:element name="FilmRequest" type="exem:FilmRequestType" xmlns:exem="http://iaws/ws/contractfirst"/>
     <xs:complexType name="FilmRequestType">
         <xs:all>
             <xs:element type="xs:string" name="imdbID"/>
-            <xs:element type="xs:string" name="titre"/>
-            <xs:element type="xs:int" name="annee"/>
         </xs:all>
     </xs:complexType>
 </xs:schema>

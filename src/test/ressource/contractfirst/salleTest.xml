@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Salles>
+	<Salle>
+		<nbSalle>5</nbSalle>
+		<ville>Toulouse</ville>
+	</Salle>
+</Salles>

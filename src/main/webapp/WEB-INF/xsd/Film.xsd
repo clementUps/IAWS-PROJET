@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://iaws/ws/contractfirst/exemple" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="Salle" type="exem:SalleType" xmlns:exem="http://iaws/ws/contractfirst/exemple"/>
+
+    <xs:complexType name="salleType">
+    <xs:all>
+      <xs:element name="nbSalle">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Ville">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+    <xs:complexType name="SalleType">
+    <xs:sequence>
+      <xs:element type="exem:salleType" name="salle" maxOccurs="unbounded" minOccurs="1" xmlns:exem="http://iaws/ws/contractfirst/exemple"/>
+    </xs:sequence>
+  </xs:complexType>
+
+    <xs:element name="FilmRequest" type="exem:FilmRequestType" xmlns:exem="http://iaws/ws/contractfirst/exemple"/>
+
+    <xs:complexType name="FilmRequestType">
+        <xs:all>
+            <xs:element type="xs:string" name="imdbID"/>
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

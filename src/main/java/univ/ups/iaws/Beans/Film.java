@@ -24,7 +24,9 @@ public class Film {
         this.annee = annee;
         this.imdbId = imdbId;
     }
+    public Film(){
 
+    }
     public String getTitre() {
         return titre;
     }
