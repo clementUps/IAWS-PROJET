@@ -1,36 +1,27 @@
 package univ.ups.iaws.Parsing;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
-import RestFull.ClientFilm;
-import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import univ.ups.iaws.Beans.Film;
-import univ.ups.iaws.Beans.Salle;
-import univ.ups.iaws.projet.GestionnaireFilm;
-import univ.ups.iaws.projet.GestionnaireLiaison;
 
 public class ParsingFilmSAX extends DefaultHandler {
 
-    static ArrayList<Film> listeFilm = new ArrayList<Film>();
+    static private ArrayList<Film> listeFilm = new ArrayList<Film>();
 
-    public List<Film> getListeFilm(){
+    public List<Film> getListeFilm() {
         return listeFilm;
     }
-    public void startDocument() { }
 
-    public void endDocument() { }
+    public void startDocument() {
+    }
+
+    public void endDocument() {
+    }
 
     public void startElement(String uri, String localName, String qName,
                              Attributes attributes) throws SAXException {
@@ -45,10 +36,10 @@ public class ParsingFilmSAX extends DefaultHandler {
             if (attributes.getQName(i).toLowerCase().equals("year")) {
                 try {
                     annee = Integer.parseInt(attributes.getValue(i));
-                }catch(NumberFormatException e) {
-                    if(attributes.getValue(i).matches("-\\/")){
+                } catch (NumberFormatException e) {
+                    if (attributes.getValue(i).matches("-\\/")) {
                         annee = Integer.parseInt(attributes.getValue(i).split("-\\/")[0]);
-                    }else {
+                    } else {
                         annee = -1;
                     }
                 }

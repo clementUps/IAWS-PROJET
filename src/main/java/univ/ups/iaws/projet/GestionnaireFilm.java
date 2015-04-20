@@ -31,12 +31,15 @@ public class GestionnaireFilm {
     public GestionnaireFilm(Session session){
         this.session = session;
     }
+
     public Film saveFilm(Film newFilm){
-        List<Film> films= (List<Film> )session.createCriteria(Film.class).add(Restrictions.eq("imdbId", newFilm.getImdbId())).list();
-        if(films != null && films.size()!= 0) {
-            return films.get(0);
+        if (newFilm != null) {
+            List<Film> films = (List<Film>) session.createCriteria(Film.class).add(Restrictions.eq("imdbId", newFilm.getImdbId())).list();
+            if (films != null && films.size() != 0) {
+                return films.get(0);
+            }
+            session.saveOrUpdate(newFilm);
         }
-        session.saveOrUpdate(newFilm);
         return newFilm;
     }
 
@@ -45,10 +48,12 @@ public class GestionnaireFilm {
         Film filmTempo = null;
         List<Film> films= (List<Film> )session.createCriteria(Film.class).list();
         for(Film film:newFilm){
-            for(Film filmIn : films){
-                System.out.println("film "+filmIn.getTitre());
-                if(filmIn.getImdbId() == film.getImdbId()){
-                    filmTempo = filmIn;
+            if (film != null) {
+                for(Film filmIn : films){
+                    System.out.println("film " + filmIn.getTitre());
+                    if (filmIn.getImdbId() == film.getImdbId()) {
+                        filmTempo = filmIn;
+                    }
                 }
             }
             if(filmTempo == null) {
@@ -60,9 +65,14 @@ public class GestionnaireFilm {
         return listeFilm;
     }
 
+    public static Session getSession() {
+        return session;
+    }
 
     public void deleteFilm(Film film){
-        session.delete(film);
+        if (film != null) {
+            session.delete(film);
+        }
     }
     public void shutDownFactory(){
         session.close();

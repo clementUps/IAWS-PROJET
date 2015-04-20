@@ -8,6 +8,11 @@ public class Salle {
     private int nbSalle;
     private String ville;
 
+    public Salle(String ville, int nbSalle) {
+        this.nbSalle = nbSalle;
+        this.ville = ville;
+    }
+
     public Salle() {
     }
 

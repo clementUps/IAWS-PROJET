@@ -27,22 +27,33 @@ public class GestionnaireSalle {
     public GestionnaireSalle(Session session){
         this.session = session;
     }
+
+    public Session getSession() {
+        return session;
+    }
+
     public Salle saveSalle(Salle newSalle){
-        session.saveOrUpdate(newSalle);
+        if (newSalle != null){
+            session.saveOrUpdate(newSalle);
+        }
         return newSalle;
     }
     public List<Salle> saveSalle(List<Salle> newFilm){
         List<Salle> listeSalle = new ArrayList<Salle>();
         Salle salleTempo;
-        for(Salle eachSalle:newFilm){
-            salleTempo = saveSalle(eachSalle);
-            listeSalle.add(salleTempo);
+        for(Salle eachSalle:newFilm) {
+            if (eachSalle != null) {
+                salleTempo = saveSalle(eachSalle);
+                listeSalle.add(salleTempo);
+            }
         }
         return listeSalle;
     }
 
     public void deleteSalle(Salle salle){
-        session.delete(salle);
+        if (salle != null) {
+            session.delete(salle);
+        }
     }
 
     public void shutDownFactory(){

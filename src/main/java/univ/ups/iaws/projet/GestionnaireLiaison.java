@@ -37,8 +37,12 @@ public class GestionnaireLiaison {
         this.session = session;
     }
 
-    public void saveAll(Salle newSalle,List<Film> films){
-        FilmSalle filmSalle;
+    public Session getSession() {
+        return session;
+    }
+
+    public FilmSalle saveAll(Salle newSalle,List<Film> films){
+        FilmSalle filmSalle = null;
         Film filmTempo;
         Salle salleTempo;
         GestionnaireSalle gestSalle = new GestionnaireSalle(session);
@@ -55,6 +59,7 @@ public class GestionnaireLiaison {
         }
         session.flush();
         session.getTransaction().commit();
+        return filmSalle;
     }
     private Iterator searchFilm(Film film)throws NullRequeteException{
         if(film.getId()== 0) {
@@ -172,7 +177,7 @@ public class GestionnaireLiaison {
         Iterator iter = result.iterator();
         while (iter.hasNext()) {
             Integer id = (Integer) iter.next();
-            System.out.println("salle : " + result.get(1));
+            System.out.println("salle : " + result.get(0));
             String queryStr = "select f from Film f where "
                     + "f.id =:salleFilmId";
             Query query = session.createQuery(queryStr);
